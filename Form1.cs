@@ -1,4 +1,6 @@
+using MongoDB.Bson;
 using MongoDB.Driver;
+using System.Threading.Tasks;
 
 namespace ZPA_Meteostanice
 {
@@ -10,12 +12,30 @@ namespace ZPA_Meteostanice
         public Form1()
         {
             InitializeComponent();
-            dbHelper = new DatabaseHelper(connectionUri, "sample_mflix", "movies");
+            dbHelper = new DatabaseHelper(connectionUri, "zpa_ukol", "data");
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            textBox1.Text = dbHelper.Search("title", "Back to the Future");
+            timer.Start();
+        }
+
+        private async void timer_Tick(object sender, EventArgs e)
+        {
+            var generator = new DataSender();
+            var data = generator.sendData();
+
+            await SaveToDb(data);
+        }
+
+        private async Task SaveToDb(MeteoData md)
+        {
+            if (md != null)
+            {
+                await dbHelper.collection.InsertOneAsync(md.ToBsonDocument());
+                label1.Text = "data ulozena do databaze";
+            }
+            
         }
     }
 }
