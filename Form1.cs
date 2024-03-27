@@ -11,13 +11,35 @@ namespace ZPA_Meteostanice
     {
         const string connectionUri = "mongodb+srv://bigi:1234@zpa-ukol.aaqrxin.mongodb.net/?retryWrites=true&w=majority&appName=ZPA-Ukol";
         private DatabaseHelper<MeteoData> dbHelper;
+        private BindingSource weatherDataSource;
 
         public Form1()
         {
             InitializeComponent();
+            InicializeDataGrid();
             dbHelper = new DatabaseHelper<MeteoData>(connectionUri, "zpa_ukol", "data");
             
             LoadData();
+        }
+
+        private void InicializeDataGrid()
+        {
+            weatherDataSource = new BindingSource();
+            dataGridView1.DataSource = weatherDataSource;
+        }
+
+        private async Task UpdateBindingSource(List<MeteoData> data)
+        {
+            weatherDataSource.DataSource = null;
+            weatherDataSource.DataSource = data;
+        }
+
+        private async Task MonitorNewData()
+        {
+            while(true)
+            {
+
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
