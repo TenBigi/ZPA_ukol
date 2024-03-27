@@ -1,5 +1,6 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Core.WireProtocol.Messages.Encoders;
 using System.Threading.Tasks;
 using ZPA_Meteostanice.data;
 using ZPA_Meteostanice.helpers;
@@ -15,7 +16,8 @@ namespace ZPA_Meteostanice
         {
             InitializeComponent();
             dbHelper = new DatabaseHelper<MeteoData>(connectionUri, "zpa_ukol", "data");
-            LoadDataToList();
+            
+            LoadData();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -40,11 +42,36 @@ namespace ZPA_Meteostanice
             }
         }
 
-        private List<MeteoData> LoadDataToList()
+        private async void LoadData()
         {
-            var filter = Builders<MeteoData>.Filter.Empty;
-            var result = dbHelper.collection.Find(filter).ToList();
-            return result;
+            try
+            {
+                List<MeteoData> dataList = SquareData(await dbHelper.GetDataAsync());
+                dataGridView1.DataSource = dataList;
+            }
+            catch (Exception ex)
+            {
+                label1.Text = ex.Message;
+            }
+            
+        }
+
+        private List<MeteoData> SquareData(List<MeteoData> data)
+        {
+            List<MeteoData> display = new();
+            foreach (var item in data)
+            {
+                display.Add(new MeteoData
+                {
+                    timestamp = item.timestamp,
+                    temperature = Math.Round(item.temperature, 2),
+                    humidity = Math.Round(item.humidity, 2),
+                    pressure = Math.Round(item.pressure, 2),
+                    windSpeed = Math.Round(item.windSpeed, 2),
+                });
+            }
+
+            return display;
         }
     }
 }

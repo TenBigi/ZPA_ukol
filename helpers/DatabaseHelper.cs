@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ZPA_Meteostanice.data;
 
 namespace ZPA_Meteostanice.helpers
 {
@@ -26,6 +27,12 @@ namespace ZPA_Meteostanice.helpers
             var filter = Builders<T>.Filter.Eq(field, value);
             var result = collection.Find(filter).First();
             return result.ToJson();
+        }
+
+        public async Task<List<T>> GetDataAsync()
+        {
+            var dataList = await collection.Find(_ => true).ToListAsync();
+            return dataList;
         }
     }
 }

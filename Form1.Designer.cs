@@ -29,23 +29,16 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            textBox1 = new TextBox();
             button1 = new Button();
             timer = new System.Windows.Forms.Timer(components);
             label1 = new Label();
+            dataGridView1 = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
-            // 
-            // textBox1
-            // 
-            textBox1.Location = new Point(0, 0);
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(677, 308);
-            textBox1.TabIndex = 0;
             // 
             // button1
             // 
-            button1.Location = new Point(12, 325);
+            button1.Location = new Point(575, 69);
             button1.Name = "button1";
             button1.Size = new Size(75, 23);
             button1.TabIndex = 1;
@@ -61,31 +54,39 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(599, 329);
+            label1.Location = new Point(-1, 491);
             label1.Name = "label1";
             label1.Size = new Size(38, 15);
             label1.TabIndex = 2;
             label1.Text = "label1";
             // 
+            // dataGridView1
+            // 
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Location = new Point(12, 12);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.Size = new Size(321, 476);
+            dataGridView1.TabIndex = 3;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(677, 360);
+            ClientSize = new Size(773, 512);
+            Controls.Add(dataGridView1);
             Controls.Add(label1);
             Controls.Add(button1);
-            Controls.Add(textBox1);
             Name = "Form1";
             Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-
-        private TextBox textBox1;
         private Button button1;
         private System.Windows.Forms.Timer timer;
         private Label label1;
+        private DataGridView dataGridView1;
     }
 }
