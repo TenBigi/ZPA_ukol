@@ -34,5 +34,11 @@ namespace ZPA_Meteostanice.helpers
             var dataList = await collection.Find(_ => true).ToListAsync();
             return dataList;
         }
+
+        public List<T> GetData()
+        {
+            var dataList = collection.Find(_ => true).ToList();
+            return dataList;
+        }
     }
 }

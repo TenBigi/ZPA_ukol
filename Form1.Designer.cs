@@ -29,22 +29,11 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            button1 = new Button();
             timer = new System.Windows.Forms.Timer(components);
             label1 = new Label();
             dataGridView1 = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
-            // 
-            // button1
-            // 
-            button1.Location = new Point(575, 69);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 23);
-            button1.TabIndex = 1;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
             // 
             // timer
             // 
@@ -65,7 +54,7 @@
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Location = new Point(12, 12);
             dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(321, 476);
+            dataGridView1.Size = new Size(280, 476);
             dataGridView1.TabIndex = 3;
             // 
             // Form1
@@ -75,7 +64,6 @@
             ClientSize = new Size(773, 512);
             Controls.Add(dataGridView1);
             Controls.Add(label1);
-            Controls.Add(button1);
             Name = "Form1";
             Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
@@ -84,7 +72,6 @@
         }
 
         #endregion
-        private Button button1;
         private System.Windows.Forms.Timer timer;
         private Label label1;
         private DataGridView dataGridView1;

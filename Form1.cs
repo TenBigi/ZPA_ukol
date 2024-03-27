@@ -12,47 +12,33 @@ namespace ZPA_Meteostanice
         const string connectionUri = "mongodb+srv://bigi:1234@zpa-ukol.aaqrxin.mongodb.net/?retryWrites=true&w=majority&appName=ZPA-Ukol";
         private DatabaseHelper<MeteoData> dbHelper;
         private BindingSource weatherDataSource;
+        private List<MeteoData> weatherData;
 
         public Form1()
         {
             InitializeComponent();
             InicializeDataGrid();
             dbHelper = new DatabaseHelper<MeteoData>(connectionUri, "zpa_ukol", "data");
-            
-            LoadData();
-        }
+            weatherData = dbHelper.GetData();
+            weatherDataSource.DataSource = weatherData;
 
-        private void InicializeDataGrid()
-        {
-            weatherDataSource = new BindingSource();
-            dataGridView1.DataSource = weatherDataSource;
-        }
-
-        private async Task UpdateBindingSource(List<MeteoData> data)
-        {
-            weatherDataSource.DataSource = null;
-            weatherDataSource.DataSource = data;
-        }
-
-        private async Task MonitorNewData()
-        {
-            while(true)
-            {
-
-            }
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
             timer.Start();
         }
 
         private async void timer_Tick(object sender, EventArgs e)
         {
+            await GenerateDataAndSaveIt();
+        }
+
+        private async Task GenerateDataAndSaveIt()
+        {
             var generator = new DataSender();
             var data = generator.sendData();
 
             await SaveToDb(data);
+            weatherData = await dbHelper.GetDataAsync();
+
+            await UpdateBindingSource();
         }
 
         private async Task SaveToDb(MeteoData md)
@@ -64,36 +50,16 @@ namespace ZPA_Meteostanice
             }
         }
 
-        private async void LoadData()
+        private void InicializeDataGrid()
         {
-            try
-            {
-                List<MeteoData> dataList = SquareData(await dbHelper.GetDataAsync());
-                dataGridView1.DataSource = dataList;
-            }
-            catch (Exception ex)
-            {
-                label1.Text = ex.Message;
-            }
-            
+            weatherDataSource = new BindingSource();
+            dataGridView1.DataSource = weatherDataSource;
         }
 
-        private List<MeteoData> SquareData(List<MeteoData> data)
+        private async Task UpdateBindingSource()
         {
-            List<MeteoData> display = new();
-            foreach (var item in data)
-            {
-                display.Add(new MeteoData
-                {
-                    timestamp = item.timestamp,
-                    temperature = Math.Round(item.temperature, 2),
-                    humidity = Math.Round(item.humidity, 2),
-                    pressure = Math.Round(item.pressure, 2),
-                    windSpeed = Math.Round(item.windSpeed, 2),
-                });
-            }
-
-            return display;
+            weatherDataSource.DataSource = null;
+            weatherDataSource.DataSource = weatherData;
         }
     }
 }
