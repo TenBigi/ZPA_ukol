@@ -4,24 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZPA_Meteostanice
+namespace ZPA_Meteostanice.data
 {
     internal class DataSender
     {
         public MeteoData sendData()
         {
-            DateTime time = DateTime.Now;
             var random = new Random();
 
             return new MeteoData
             {
-                temperature = random.NextDouble(),
+                timestamp = DateTime.Now,
+                temperature = random.NextDouble() * 50 - 10,
                 humidity = random.NextDouble(),
-                pressure = random.NextDouble() * 50 - 10,
+                pressure = random.NextDouble(),
                 windSpeed = random.NextDouble() * 100,
             };
-
-            
         }
     }
 }
