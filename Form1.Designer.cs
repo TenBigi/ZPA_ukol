@@ -28,22 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            timer = new System.Windows.Forms.Timer(components);
             label1 = new Label();
             dataGridView1 = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
-            // timer
-            // 
-            timer.Interval = 20000;
-            timer.Tick += timer_Tick;
-            // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(-1, 491);
+            label1.Location = new Point(12, 553);
             label1.Name = "label1";
             label1.Size = new Size(38, 15);
             label1.TabIndex = 2;
@@ -54,14 +47,14 @@
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Location = new Point(12, 12);
             dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(280, 476);
+            dataGridView1.Size = new Size(560, 231);
             dataGridView1.TabIndex = 3;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(773, 512);
+            ClientSize = new Size(585, 577);
             Controls.Add(dataGridView1);
             Controls.Add(label1);
             Name = "Form1";
@@ -72,7 +65,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.Timer timer;
         private Label label1;
         private DataGridView dataGridView1;
     }
