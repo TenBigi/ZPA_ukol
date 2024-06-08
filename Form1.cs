@@ -14,6 +14,7 @@ namespace ZPA_Meteostanice
         private StationDbHelper StationHelper;
         private BindingSource weatherDataSource;
         private List<DataProjection> weatherDataProjection;
+        private ObjectId selectedStationId;
         private System.Windows.Forms.Timer timer;
         public Form1()
         {
@@ -21,13 +22,8 @@ namespace ZPA_Meteostanice
             InicializeDataGrid();
             DataHelper = new DataDbHelper(connectionUri, "zpa_ukol");
             StationHelper = new StationDbHelper(connectionUri, "zpa_ukol");
+            LoadStations();
             InicializeTimer();
-
-        }
-
-        private async void Form1_Load(object sender, EventArgs e)
-        {
-            await LoadWeatherData();
         }
 
         private void InicializeTimer()
@@ -41,29 +37,32 @@ namespace ZPA_Meteostanice
         //simulace ukladani dat z meteostanice primo do databaze a jejich nasledne nacteni do listu
         private async Task GenerateDataAndRefresh()
         {
-            var generator = new DataSender();
+            var stations = await StationHelper.GetStationsAsync();
+            var stationIds = stations.Select(s => s.Id).ToArray();
+            var generator = new DataSender(stationIds);
             var data = generator.sendData();
 
-            await SaveToDb(data);
-            await LoadWeatherData();
+            await DataHelper.InsertDataAsync(data);
+            await LoadWeatherData(selectedStationId);
         }
 
-        //ulozeni do databaze
-        private async Task SaveToDb(MeteoData md)
+        //nacteni vsch stanic a vygenerovani korespondujicich zalozek pro zobrazeni dat
+        private async void LoadStations()
         {
-            if (md != null)
+            var stations = await StationHelper.GetStationsAsync();
+            if (stations.Count > 0)
             {
-                await dbHelper.collection.InsertOneAsync(md);
-                label1.Text = "data ulozena do databaze";
+                selectedStationId = stations.First().Id;
+                await LoadWeatherData(selectedStationId);
             }
         }
 
         //naplneni data grid view novymi daty
-        private async Task LoadWeatherData()
+        private async Task LoadWeatherData(ObjectId stationId)
         {
-            var weatherData = await dbHelper.GetDataAsync();
+            var weatherData = await DataHelper.GetDataByStationAsync(stationId);
 
-            //premapovani objektu z databaze do classy DataProjection - vynechani nekterych properties, v mem pripade Id
+            //premapovani objektu z databaze do classy DataProjection - vynechani nekterych properties, v mem pripade Id a StationId
             weatherDataProjection = weatherData.Select(data => new DataProjection
             {
                 Timestamp = data.timestamp,
@@ -75,7 +74,6 @@ namespace ZPA_Meteostanice
 
             await UpdateBindingSource();
         }
-
         private void InicializeDataGrid()
         {
             weatherDataSource = new BindingSource();

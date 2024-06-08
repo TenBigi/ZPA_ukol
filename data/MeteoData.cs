@@ -18,7 +18,6 @@ namespace ZPA_Meteostanice.data
         public double windSpeed { get; set; }
         public double humidity { get; set; }
         public double pressure { get; set; }
-
         public ObjectId StationId { get; set; }
     }
 }
